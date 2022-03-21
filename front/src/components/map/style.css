@@ -1,0 +1,7 @@
+.leaflet-container {
+  height: 100%;
+}
+
+#map {
+  position: absolute;
+}
