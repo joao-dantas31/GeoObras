@@ -2,7 +2,7 @@ import { makeObservable, observable, runInAction } from "mobx";
 import LayerService from "../service/layerService";
 
 class LayerStore {
-  layerMunicipio = null;
+  layerMunicipio = {};
   loading = false;
   layersList = ["municipios", "microrregioes", "mesorregioes"];
 
@@ -14,7 +14,7 @@ class LayerStore {
     this.service = new LayerService();
   }
 
-  loadLayer(layer) {
+  loadLayer(layer, callback) {
     this.loading = true;
     this.service
       .getLayer(layer)
@@ -24,7 +24,10 @@ class LayerStore {
         })
       )
       .catch((error) => runInAction(() => console.error(error)))
-      .finally(() => (this.loading = false));
+      .finally(() => {
+        this.loading = false;
+        callback();
+      });
   }
 }
 

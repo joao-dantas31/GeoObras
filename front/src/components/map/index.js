@@ -1,4 +1,10 @@
-import { LayersControl, MapContainer, GeoJSON, TileLayer } from "react-leaflet";
+import {
+  LayersControl,
+  MapContainer,
+  GeoJSON,
+  TileLayer,
+  LayerGroup,
+} from "react-leaflet";
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 import React from "react";
@@ -12,10 +18,11 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
-    this.layerStore.loadLayer("municipios");
+    this.layerStore.loadLayer("municipios", () => this.forceUpdate());
   }
 
   render() {
+    debugger;
     return (
       <div id="map" style={{ width: "100%", height: "100%" }}>
         <MapContainer center={this.center} zoom={7} preferCanvas={true}>
@@ -27,7 +34,12 @@ class Map extends React.Component {
               />
             </LayersControl.BaseLayer>
             <LayersControl.Overlay checked name="Municipios">
-              <GeoJSON data={this.layerStore.layerMunicipios}></GeoJSON>
+              <LayerGroup>
+                {this.layerStore.layerMunicipio.features &&
+                  this.layerStore.layerMunicipio.features.map((item) => {
+                    return <GeoJSON data={item.geometry}></GeoJSON>;
+                  })}
+              </LayerGroup>
             </LayersControl.Overlay>
           </LayersControl>
         </MapContainer>
