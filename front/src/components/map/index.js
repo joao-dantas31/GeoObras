@@ -1,14 +1,9 @@
-import {
-  LayersControl,
-  MapContainer,
-  GeoJSON,
-  TileLayer,
-  LayerGroup,
-} from "react-leaflet";
+import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 import React from "react";
 import LayerStore from "../../store/layerStore";
+import Layer from "../layer";
 
 class Map extends React.Component {
   constructor() {
@@ -18,11 +13,10 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
-    this.layerStore.loadLayer("municipios", () => this.forceUpdate());
+    this.layerStore.loadAllLayers(() => this.forceUpdate());
   }
 
   render() {
-    debugger;
     return (
       <div id="map" style={{ width: "100%", height: "100%" }}>
         <MapContainer center={this.center} zoom={7} preferCanvas={true}>
@@ -33,14 +27,18 @@ class Map extends React.Component {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
             </LayersControl.BaseLayer>
-            <LayersControl.Overlay checked name="Municipios">
-              <LayerGroup>
-                {this.layerStore.layerMunicipio.features &&
-                  this.layerStore.layerMunicipio.features.map((item) => {
-                    return <GeoJSON data={item.geometry}></GeoJSON>;
-                  })}
-              </LayerGroup>
-            </LayersControl.Overlay>
+            <Layer
+              name="Municipios"
+              geoJson={this.layerStore.layers["municipios"]}
+            />
+            <Layer
+              name="Mesorregiões"
+              geoJson={this.layerStore.layers["mesorregioes"]}
+            />
+            <Layer
+              name="Microrregiões"
+              geoJson={this.layerStore.layers["microrregioes"]}
+            />
           </LayersControl>
         </MapContainer>
       </div>

@@ -2,31 +2,37 @@ import { makeObservable, observable, runInAction } from "mobx";
 import LayerService from "../service/layerService";
 
 class LayerStore {
-  layerMunicipio = {};
+  layers = {};
   loading = false;
-  layersList = ["municipios", "microrregioes", "mesorregioes"];
+  layersList = [
+    { name: "microrregioes", properties: ["cd_micro", "nm_micro"] },
+    { name: "municipios", properties: ["cd_mun", "nm_mun", "area_km2"] },
+    { name: "mesorregioes", properties: ["cd_meso", "nm_meso"] },
+  ];
 
   constructor() {
     makeObservable(this, {
-      layerMunicipio: observable,
       loading: observable,
     });
     this.service = new LayerService();
   }
 
+  loadAllLayers(callback) {
+    this.layersList.forEach((layer) => this.loadLayer(layer, callback));
+  }
+
   loadLayer(layer, callback) {
     this.loading = true;
+
     this.service
       .getLayer(layer)
       .then((response) =>
-        runInAction(() => {
-          this.layerMunicipio = response.data;
-        })
+        runInAction(() => (this.layers[layer] = response.data))
       )
       .catch((error) => runInAction(() => console.error(error)))
       .finally(() => {
         this.loading = false;
-        callback();
+        callback && callback();
       });
   }
 }
