@@ -18,8 +18,8 @@ module.exports = {
     return response;
   },
 
-  async getLayerWithProperties(layer) {
-    const result = await query(this.getQuery(layer));
+  async getLayerWithProperties(layer, spatialCondition) {
+    const result = await query(this.getQuery(layer, spatialCondition));
 
     result.forEach((item) => {
       item.geometry = parse(item.geometry);
@@ -32,13 +32,17 @@ module.exports = {
     return response;
   },
 
-  getQuery(layer) {
+  getQuery(layer, spatialCondition) {
     let queryProperties = "";
     layer.properties &&
       layer.properties.forEach(
-        (prop) => (queryProperties += `, ${prop} as [properties.${prop}]`)
+        (prop) => (queryProperties += `, l.${prop} as [properties.${prop}]`)
       );
 
-    return `select 'Feature' AS type, ogr_geometry.STAsText() as [geometry] ${queryProperties} FROM  ${layer.name}`;
+    const spatialQuery = spatialCondition
+      ? `, ${spatialCondition.table} t where t.ogr_geometry.${spatialCondition.operation}(l.ogr_geometry) = 1 and t.ogr_fid = ${spatialCondition.tableId}`
+      : "";
+
+    return `select 'Feature' AS type, l.ogr_geometry.STAsText() as [geometry] ${queryProperties} FROM  ${layer.name} l ${spatialQuery}`;
   },
 };

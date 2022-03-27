@@ -13,9 +13,13 @@ module.exports = {
   },
 
   async layersWithProperties(request, response) {
-    const layer = request.body;
+    const layer = request.body.layer;
+    const spatialCondition = request.body.spatialCondition;
     try {
-      const db = await repository.getLayerWithProperties(layer);
+      const db = await repository.getLayerWithProperties(
+        layer,
+        spatialCondition
+      );
       response.status(200).json(db);
     } catch (err) {
       response.status(500).json({ message: err.message });

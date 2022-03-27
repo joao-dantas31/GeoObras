@@ -10,10 +10,10 @@ class LayerService {
     );
   }
 
-  getLayerWithProperties(layer) {
+  getLayerWithProperties(layer, spatialCondition) {
     return axios.post(
       `http://localhost:8000${ApiEndpoints.layer}`,
-      layer,
+      { layer, spatialCondition },
       corsHeaders
     );
   }

@@ -29,6 +29,20 @@ class LayerStore {
         "Finalizada",
       ],
     },
+    {
+      name: "Obras",
+      resultName: "Resultado",
+      checked: true,
+      properties: [
+        "id",
+        "Descricao",
+        "Tipo",
+        "Categoria",
+        "Valor",
+        "Data_inicio",
+        "Finalizada",
+      ],
+    },
   ];
 
   constructor() {
@@ -42,14 +56,15 @@ class LayerStore {
     this.layersList.forEach((layer) => this.loadLayer(layer, callback));
   }
 
-  loadLayer(layer, callback) {
+  loadLayer(layer, callback, spatialCondition) {
     this.loading = true;
 
     this.service
-      .getLayerWithProperties(layer)
+      .getLayerWithProperties(layer, spatialCondition)
       .then((response) =>
         runInAction(() => {
-          this.layers[layer.name] = response.data;
+          this.layers[layer.resultName ? layer.resultName : layer.name] =
+            response.data;
         })
       )
       .catch((error) =>
