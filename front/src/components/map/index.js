@@ -12,14 +12,24 @@ class Map extends React.Component {
     this.state = { visibleFiltroSidebar: false, item: null };
     this.layerStore = new LayerStore();
     this.center = [-8.77, -70.55];
+
+    this.loadSpatialQuery = this.loadSpatialQuery.bind(this);
   }
 
   componentDidMount() {
     this.layerStore.loadAllLayers(() => this.forceUpdate());
   }
 
+  loadSpatialQuery(spatialCondition, layerName) {
+    this.layerStore.loadLayer(
+      this.layerStore.layersMap[layerName],
+      () => this.forceUpdate(),
+      spatialCondition
+    );
+  }
+
   renderLayers() {
-    return this.layerStore.layersList.map((layer) => (
+    return Object.values(this.layerStore.layersMap).map((layer) => (
       <Layer
         openMenu={(item) => {
           this.setState({
@@ -27,7 +37,7 @@ class Map extends React.Component {
             visibleFiltroSidebar: true,
           });
         }}
-        name={layer.name}
+        name={layer.resultName ? layer.resultName : layer.name}
         checked={layer.checked}
         geoJson={this.layerStore.layers[layer.name]}
       />
@@ -38,6 +48,7 @@ class Map extends React.Component {
     return (
       <div id="map" style={{ width: "100%", height: "100%" }}>
         <MapMenubar
+          loadSpatialQuery={this.loadSpatialQuery}
           visibleFiltroSidebar={this.state.visibleFiltroSidebar}
           item={this.state.item}
           closeSidebar={() => this.setState({ visibleFiltroSidebar: false })}

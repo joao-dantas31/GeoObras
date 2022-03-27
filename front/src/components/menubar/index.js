@@ -51,6 +51,8 @@ class MapMenubar extends React.Component {
           }
         />
         <FiltroSidebar
+          loadSpatialQuery={this.props.loadSpatialQuery}
+          item={this.props.item}
           visibleFiltroSidebar={this.props.visibleFiltroSidebar}
           toggleFiltroSidebar={this.props.closeSidebar}
         />

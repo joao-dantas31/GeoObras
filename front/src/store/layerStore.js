@@ -4,19 +4,38 @@ import LayerService from "../service/layerService";
 class LayerStore {
   layers = {};
   loading = false;
-  layersList = [
-    { name: "Mesorregioes", checked: true, properties: ["cd_meso", "nm_meso"] },
-    {
+  baseResultLayer = {
+    name: "Obras",
+    resultName: "Resultado",
+    checked: true,
+    properties: [
+      "id",
+      "Descricao",
+      "Tipo",
+      "Categoria",
+      "Valor",
+      "Data_inicio",
+      "Finalizada",
+    ],
+  };
+
+  layersMap = {
+    Mesorregioes: {
+      name: "Mesorregioes",
+      checked: true,
+      properties: ["cd_meso", "nm_meso"],
+    },
+    Microrregioes: {
       name: "Microrregioes",
       checked: false,
       properties: ["cd_micro", "nm_micro"],
     },
-    {
+    Municipios: {
       name: "Municipios",
       checked: false,
       properties: ["cd_mun", "nm_mun", "area_km2"],
     },
-    {
+    Obras: {
       name: "Obras",
       checked: true,
       properties: [
@@ -29,21 +48,7 @@ class LayerStore {
         "Finalizada",
       ],
     },
-    {
-      name: "Obras",
-      resultName: "Resultado",
-      checked: true,
-      properties: [
-        "id",
-        "Descricao",
-        "Tipo",
-        "Categoria",
-        "Valor",
-        "Data_inicio",
-        "Finalizada",
-      ],
-    },
-  ];
+  };
 
   constructor() {
     makeObservable(this, {
@@ -53,7 +58,9 @@ class LayerStore {
   }
 
   loadAllLayers(callback) {
-    this.layersList.forEach((layer) => this.loadLayer(layer, callback));
+    Object.values(this.layersMap).forEach((layer) =>
+      this.loadLayer(layer, callback)
+    );
   }
 
   loadLayer(layer, callback, spatialCondition) {
