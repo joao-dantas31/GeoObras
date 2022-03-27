@@ -8,6 +8,10 @@ routes.get("/layer/:layer", (req, res) => {
   return redirect(req, res, layersController.layers);
 });
 
+routes.post("/layer", (req, res) => {
+  return redirect(req, res, layersController.layersWithProperties);
+});
+
 const redirect = (req, res, route) => {
   try {
     return route(req, res);

@@ -11,4 +11,15 @@ module.exports = {
       console.error(err);
     }
   },
+
+  async layersWithProperties(request, response) {
+    const layer = request.body;
+    try {
+      const db = await repository.getLayerWithProperties(layer);
+      response.status(200).json(db);
+    } catch (err) {
+      response.status(500).json({ message: err.message });
+      console.error(err);
+    }
+  },
 };
