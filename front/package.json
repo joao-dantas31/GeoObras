@@ -6,6 +6,10 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.26.1",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-react": "^6.24.1",
+    "decorators": "^0.0.1",
     "leaflet": "^1.7.1",
     "mobx": "^6.5.0",
     "mobx-react": "^7.3.0",
@@ -42,5 +46,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "react-test-renderer": "16.5.0"
   }
 }
