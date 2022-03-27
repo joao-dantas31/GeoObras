@@ -4,39 +4,44 @@ import LayerService from "../service/layerService";
 class LayerStore {
   layers = {};
   loading = false;
-  baseResultLayer = {
-    name: "Obras",
-    resultName: "Resultado",
-    checked: true,
-    properties: [
-      "id",
-      "Descricao",
-      "Tipo",
-      "Categoria",
-      "Valor",
-      "Data_inicio",
-      "Finalizada",
-    ],
-  };
 
   layersMap = {
     Mesorregioes: {
       name: "Mesorregioes",
+      visible: true,
       checked: true,
-      properties: ["cd_meso", "nm_meso"],
+      properties: ["cd_meso", "nm_meso", "ogr_fid"],
     },
     Microrregioes: {
       name: "Microrregioes",
+      visible: true,
       checked: false,
-      properties: ["cd_micro", "nm_micro"],
+      properties: ["cd_micro", "nm_micro", "ogr_fid"],
     },
     Municipios: {
       name: "Municipios",
+      visible: true,
       checked: false,
-      properties: ["cd_mun", "nm_mun", "area_km2"],
+      properties: ["cd_mun", "nm_mun", "area_km2", "ogr_fid"],
     },
     Obras: {
       name: "Obras",
+      visible: true,
+      checked: true,
+      properties: [
+        "id",
+        "Descricao",
+        "Tipo",
+        "Categoria",
+        "Valor",
+        "Data_inicio",
+        "Finalizada",
+      ],
+    },
+    Resultado: {
+      name: "Obras",
+      resultName: "Resultado",
+      visible: false,
       checked: true,
       properties: [
         "id",
@@ -58,8 +63,8 @@ class LayerStore {
   }
 
   loadAllLayers(callback) {
-    Object.values(this.layersMap).forEach((layer) =>
-      this.loadLayer(layer, callback)
+    Object.values(this.layersMap).forEach(
+      (layer) => layer.visible && this.loadLayer(layer, callback)
     );
   }
 

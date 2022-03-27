@@ -46,19 +46,20 @@ class FiltroSidebar extends React.Component {
 
   renderButtons() {
     return this.getButtons().map((button) => {
-      <Button
-        label={button.name}
-        style={{ width: "100%", marginBottom: "5px" }}
-        className="p-button-outlined "
-        onClick={this.props.loadSpatialQuery(
-          {
-            table: this.props.item?.type,
-            operation: button.functionName,
-            tableId: this.props.item?.item?.properties.ogr_fid,
-          },
-          this.props.item?.type
-        )}
-      />;
+      return (
+        <Button
+          label={button.name}
+          style={{ width: "100%", marginBottom: "5px" }}
+          className="p-button-outlined "
+          onClick={() =>
+            this.props.loadSpatialQuery({
+              table: this.props.item?.type,
+              operation: button.functionName,
+              tableId: this.props.item?.item?.properties.ogr_fid,
+            })
+          }
+        />
+      );
     });
   }
 

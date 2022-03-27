@@ -20,28 +20,40 @@ class Map extends React.Component {
     this.layerStore.loadAllLayers(() => this.forceUpdate());
   }
 
-  loadSpatialQuery(spatialCondition, layerName) {
+  loadSpatialQuery(spatialCondition) {
     this.layerStore.loadLayer(
-      this.layerStore.layersMap[layerName],
-      () => this.forceUpdate(),
+      this.layerStore.layersMap.Resultado,
+      () => {
+        this.layerStore.layersMap.Resultado.visible = true;
+        this.layerStore.layersMap.Obras.checked = false;
+        this.forceUpdate();
+      },
       spatialCondition
     );
   }
 
   renderLayers() {
-    return Object.values(this.layerStore.layersMap).map((layer) => (
-      <Layer
-        openMenu={(item) => {
-          this.setState({
-            item,
-            visibleFiltroSidebar: true,
-          });
-        }}
-        name={layer.resultName ? layer.resultName : layer.name}
-        checked={layer.checked}
-        geoJson={this.layerStore.layers[layer.name]}
-      />
-    ));
+    return Object.values(this.layerStore.layersMap).map((layer) => {
+      if (layer.visible) {
+        return (
+          <Layer
+            openMenu={(item) => {
+              this.setState({
+                item,
+                visibleFiltroSidebar: true,
+              });
+            }}
+            name={layer.resultName ? layer.resultName : layer.name}
+            checked={layer.checked}
+            geoJson={
+              this.layerStore.layers[
+                layer.resultName ? layer.resultName : layer.name
+              ]
+            }
+          />
+        );
+      }
+    });
   }
 
   render() {
