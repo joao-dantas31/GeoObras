@@ -25,9 +25,9 @@ class LayerStore {
     this.loading = true;
 
     this.service
-      .getLayer(layer)
+      .getLayerWithProperties(layer)
       .then((response) =>
-        runInAction(() => (this.layers[layer] = response.data))
+        runInAction(() => (this.layers[layer.name] = response.data))
       )
       .catch((error) => runInAction(() => console.error(error)))
       .finally(() => {

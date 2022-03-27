@@ -19,7 +19,12 @@ class Map extends React.Component {
   render() {
     return (
       <div id="map" style={{ width: "100%", height: "100%" }}>
-        <MapContainer center={this.center} zoom={7} preferCanvas={true}>
+        <MapContainer
+          center={this.center}
+          zoom={7}
+          minZoom={6}
+          preferCanvas={true}
+        >
           <LayersControl position="topright">
             <LayersControl.BaseLayer checked name="OpenStreetMap">
               <TileLayer
@@ -32,12 +37,12 @@ class Map extends React.Component {
               geoJson={this.layerStore.layers["municipios"]}
             />
             <Layer
-              name="Mesorregiões"
-              geoJson={this.layerStore.layers["mesorregioes"]}
-            />
-            <Layer
               name="Microrregiões"
               geoJson={this.layerStore.layers["microrregioes"]}
+            />
+            <Layer
+              name="Mesorregiões"
+              geoJson={this.layerStore.layers["mesorregioes"]}
             />
           </LayersControl>
         </MapContainer>
