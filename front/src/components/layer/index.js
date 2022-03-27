@@ -4,7 +4,7 @@ const formatItem = (item) => {
   let properties = {};
   Object.keys(item).forEach((key) => {
     const splitedKey = key.split(".");
-    if (splitedKey[0] === "properties" && splitedKey.length == 2)
+    if (splitedKey[0] === "properties" && splitedKey.length === 2)
       properties[splitedKey[1]] = item[key];
   });
   item.properties = properties;

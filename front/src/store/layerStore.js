@@ -5,9 +5,21 @@ class LayerStore {
   layers = {};
   loading = false;
   layersList = [
-    { name: "microrregioes", properties: ["cd_micro", "nm_micro"] },
-    { name: "municipios", properties: ["cd_mun", "nm_mun", "area_km2"] },
-    { name: "mesorregioes", properties: ["cd_meso", "nm_meso"] },
+    { name: "Mesorregioes", properties: ["cd_meso", "nm_meso"] },
+    { name: "Microrregioes", properties: ["cd_micro", "nm_micro"] },
+    { name: "Municipios", properties: ["cd_mun", "nm_mun", "area_km2"] },
+    {
+      name: "Obras",
+      properties: [
+        "id",
+        "Descricao",
+        "Tipo",
+        "Categoria",
+        "Valor",
+        "Data_inicio",
+        "Finalizada",
+      ],
+    },
   ];
 
   constructor() {
