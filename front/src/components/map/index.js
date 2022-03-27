@@ -18,7 +18,7 @@ class Map extends React.Component {
 
   render() {
     return (
-      <div id="map" style={{ width: "100%", height: "92%" }}>
+      <div id="map" style={{ width: "100%", height: "90%" }}>
         <MapContainer
           center={this.center}
           zoom={7}
