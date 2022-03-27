@@ -16,7 +16,6 @@ class MapMenubar extends React.Component {
   }
 
   toggleFiltroSidebar() {
-    debugger;
     this.setState((prevState) => ({
       visibleFiltroSidebar: !prevState.visibleFiltroSidebar,
     }));
@@ -25,44 +24,46 @@ class MapMenubar extends React.Component {
   render() {
     return (
       <div
-        style={this.state.visibleFiltroSidebar ? { marginLeft: "23.5%" } : {}}
+        style={{
+          height: "10%",
+          marginLeft: this.state.visibleFiltroSidebar ? "20rem" : 0,
+        }}
       >
-        <div>
-          <Menubar
-            start={
-              <>
-                <Button
-                  className="p-button-outlined p-button-rounded mr-2"
-                  icon="pi pi-home"
-                  onClick={() => window.location.reload()}
-                />
-                <Button
-                  className="p-button-outlined p-button-rounded mr-2"
-                  icon="pi pi-filter-fill"
-                  tooltip="Filtros personalizados"
-                  onClick={this.toggleFiltroSidebar}
-                />
-                <Button
-                  className="p-button-outlined p-button-rounded mr-2"
-                  icon="pi pi-eye"
-                  tooltip="Listagem de obras"
-                />
-              </>
-            }
-            end={
-              <>
-                <InputText
-                  placeholder={"Busque por obras"}
-                  icon="pi pi-power-off"
-                />
-                <Button
-                  icon="pi pi-search"
-                  className="p-button-rounded p-button-text"
-                />
-              </>
-            }
-          />
-        </div>
+        <Menubar
+          style={{ height: "100%" }}
+          start={
+            <>
+              <Button
+                className="p-button-outlined p-button-rounded mr-2"
+                icon="pi pi-home"
+                onClick={() => window.location.reload()}
+              />
+              <Button
+                className="p-button-outlined p-button-rounded mr-2"
+                icon="pi pi-filter-fill"
+                tooltip="Filtros personalizados"
+                onClick={this.toggleFiltroSidebar}
+              />
+              <Button
+                className="p-button-outlined p-button-rounded mr-2"
+                icon="pi pi-eye"
+                tooltip="Listagem de obras"
+              />
+            </>
+          }
+          end={
+            <>
+              <InputText
+                placeholder={"Busque por obras"}
+                icon="pi pi-power-off"
+              />
+              <Button
+                icon="pi pi-search"
+                className="p-button-rounded p-button-text"
+              />
+            </>
+          }
+        />
         <FiltroSidebar
           visibleFiltroSidebar={this.state.visibleFiltroSidebar}
           toggleFiltroSidebar={this.toggleFiltroSidebar}
