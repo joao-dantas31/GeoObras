@@ -4,6 +4,7 @@ import {
   GeoJSON,
   Tooltip,
   Marker,
+  CircleMarker,
 } from "react-leaflet";
 import leaflet from "leaflet";
 
@@ -34,7 +35,14 @@ const getTooltip = (item) => {
 };
 
 const iconObra = new leaflet.Icon({
-  iconUrl: "./icon_obra.png",
+  iconUrl: require("./icon_obra.png"),
+  iconRetinaUrl: require("./icon_obra.png"),
+  iconAnchor: new leaflet.Point(20, 50),
+  popupAnchor: null,
+  shadowUrl: null,
+  shadowSize: null,
+  shadowAnchor: null,
+  iconSize: new leaflet.Point(40, 50),
 });
 
 const Layer = (props) => (
@@ -45,14 +53,22 @@ const Layer = (props) => (
         props.geoJson.features.map((item, index) => {
           if (item.geometry.type.includes("Point")) {
             return (
-              <Marker
-                position={[
-                  leaflet.GeoJSON.coordsToLatLng(item.geometry.coordinates),
-                ]}
-                icon={iconObra}
-              >
-                {getTooltip(item)}
-              </Marker>
+              <>
+                <Marker
+                  position={leaflet.GeoJSON.coordsToLatLng(
+                    item.geometry.coordinates
+                  )}
+                  icon={iconObra}
+                >
+                  {getTooltip(item)}
+                </Marker>
+                <CircleMarker
+                  center={leaflet.GeoJSON.coordsToLatLng(
+                    item.geometry.coordinates
+                  )}
+                  radius={2}
+                />
+              </>
             );
           } else {
             return (
