@@ -5,11 +5,20 @@ class LayerStore {
   layers = {};
   loading = false;
   layersList = [
-    { name: "Mesorregioes", properties: ["cd_meso", "nm_meso"] },
-    { name: "Microrregioes", properties: ["cd_micro", "nm_micro"] },
-    { name: "Municipios", properties: ["cd_mun", "nm_mun", "area_km2"] },
+    { name: "Mesorregioes", checked: true, properties: ["cd_meso", "nm_meso"] },
+    {
+      name: "Microrregioes",
+      checked: false,
+      properties: ["cd_micro", "nm_micro"],
+    },
+    {
+      name: "Municipios",
+      checked: false,
+      properties: ["cd_mun", "nm_mun", "area_km2"],
+    },
     {
       name: "Obras",
+      checked: true,
       properties: [
         "id",
         "Descricao",
@@ -39,9 +48,15 @@ class LayerStore {
     this.service
       .getLayerWithProperties(layer)
       .then((response) =>
-        runInAction(() => (this.layers[layer.name] = response.data))
+        runInAction(() => {
+          this.layers[layer.name] = response.data;
+        })
       )
-      .catch((error) => runInAction(() => console.error(error)))
+      .catch((error) =>
+        runInAction(() => {
+          console.error(error);
+        })
+      )
       .finally(() => {
         this.loading = false;
         callback && callback();

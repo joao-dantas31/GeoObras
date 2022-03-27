@@ -18,7 +18,11 @@ class Map extends React.Component {
 
   renderLayers() {
     return this.layerStore.layersList.map((layer) => (
-      <Layer name={layer.name} geoJson={this.layerStore.layers[layer.name]} />
+      <Layer
+        name={layer.name}
+        checked={layer.checked}
+        geoJson={this.layerStore.layers[layer.name]}
+      />
     ));
   }
 

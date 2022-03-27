@@ -27,7 +27,7 @@ const getTooltip = (item) => {
 };
 
 const Layer = (props) => (
-  <LayersControl.Overlay checked name={props.name}>
+  <LayersControl.Overlay checked={props.checked} name={props.name}>
     <LayerGroup>
       {props.geoJson &&
         props.geoJson.features &&

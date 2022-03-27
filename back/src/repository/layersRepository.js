@@ -1,15 +1,17 @@
 const { query } = require("../database/builder");
+var parse = require("wellknown");
+
 module.exports = {
   async getLayer(layer) {
     const result = await query(
-      `select 'Feature' AS type, JSON_QUERY (dbo.geometry2json(ogr_geometry)) as [geometry] FROM  ${layer}`
+      `select 'Feature' AS type, ogr_geometry.STAsText() as geom FROM  ${layer}`
     );
 
     result.forEach((item) => {
-      item.geometry = JSON.parse(item.geometry);
+      item.geom = parse(item.geom);
     });
 
-    let response = {
+    const response = {
       type: "FeatureCollection",
       features: result,
     };
@@ -20,10 +22,10 @@ module.exports = {
     const result = await query(this.getQuery(layer));
 
     result.forEach((item) => {
-      item.geometry = JSON.parse(item.geometry);
+      item.geometry = parse(item.geometry);
     });
 
-    let response = {
+    const response = {
       type: "FeatureCollection",
       features: result,
     };
@@ -37,6 +39,6 @@ module.exports = {
         (prop) => (queryProperties += `, ${prop} as [properties.${prop}]`)
       );
 
-    return `select 'Feature' AS type, JSON_QUERY (dbo.geometry2json(ogr_geometry)) as [geometry]${queryProperties} FROM  ${layer.name}`;
+    return `select 'Feature' AS type, ogr_geometry.STAsText() as [geometry] ${queryProperties} FROM  ${layer.name}`;
   },
 };
