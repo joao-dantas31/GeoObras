@@ -11,7 +11,7 @@ const center = [-8.77, -70.55];
 
 const Map = observer(() => {
   return (
-    <div id="map" style={{ width: "100%", height: "100%" }}>
+    <div id="map" style={{ width: "100%", height: "92%" }}>
       <MapContainer center={center} zoom={7} preferCanvas={true}>
         <LayersControl position="topright">
           <LayersControl.BaseLayer checked name="OpenStreetMap">

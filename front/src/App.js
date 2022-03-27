@@ -1,5 +1,4 @@
 import React from "react";
-
 import Map from "./components/map";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
@@ -16,18 +15,21 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <Button
-          icon="pi pi-arrow-right"
-          onClick={() => this.setState({ visibleLeft: true })}
-          className="mr-2"
-        ></Button>
+        <div>
+          <Button
+            icon="pi pi-arrow-right"
+            onClick={() => this.setState({ visibleLeft: true })}
+            className="mr-2"
+          ></Button>
 
-        <Map></Map>
-
-        <Sidebar
-          visible={this.state.visibleLeft}
-          onHide={() => this.setState({ visibleLeft: false })}
-        ></Sidebar>
+          <Sidebar
+            visible={this.state.visibleLeft}
+            onHide={() => this.setState({ visibleLeft: false })}
+          ></Sidebar>
+        </div>
+        <div>
+          <Map></Map>
+        </div>
       </>
     );
   }
