@@ -16,6 +16,12 @@ class Map extends React.Component {
     this.layerStore.loadAllLayers(() => this.forceUpdate());
   }
 
+  renderLayers() {
+    return this.layerStore.layersList.map((layer) => (
+      <Layer name={layer.name} geoJson={this.layerStore.layers[layer.name]} />
+    ));
+  }
+
   render() {
     return (
       <div id="map" style={{ width: "100%", height: "90%" }}>
@@ -32,18 +38,7 @@ class Map extends React.Component {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
             </LayersControl.BaseLayer>
-            <Layer
-              name="Municipios"
-              geoJson={this.layerStore.layers["municipios"]}
-            />
-            <Layer
-              name="Microrregiões"
-              geoJson={this.layerStore.layers["microrregioes"]}
-            />
-            <Layer
-              name="Mesorregiões"
-              geoJson={this.layerStore.layers["mesorregioes"]}
-            />
+            {this.renderLayers()}
           </LayersControl>
         </MapContainer>
       </div>
