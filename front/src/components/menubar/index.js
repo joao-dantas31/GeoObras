@@ -11,14 +11,6 @@ import FiltroSidebar from "../sidebar";
 class MapMenubar extends React.Component {
   constructor() {
     super();
-    this.state = { visibleFiltroSidebar: false };
-    this.toggleFiltroSidebar = this.toggleFiltroSidebar.bind(this);
-  }
-
-  toggleFiltroSidebar() {
-    this.setState((prevState) => ({
-      visibleFiltroSidebar: !prevState.visibleFiltroSidebar,
-    }));
   }
 
   render() {
@@ -26,7 +18,7 @@ class MapMenubar extends React.Component {
       <div
         style={{
           height: "10%",
-          marginLeft: this.state.visibleFiltroSidebar ? "20rem" : 0,
+          marginLeft: this.props.visibleFiltroSidebar ? "20rem" : 0,
         }}
       >
         <Menubar
@@ -37,12 +29,6 @@ class MapMenubar extends React.Component {
                 className="p-button-outlined p-button-rounded mr-2"
                 icon="pi pi-home"
                 onClick={() => window.location.reload()}
-              />
-              <Button
-                className="p-button-outlined p-button-rounded mr-2"
-                icon="pi pi-filter-fill"
-                tooltip="Filtros personalizados"
-                onClick={this.toggleFiltroSidebar}
               />
               <Button
                 className="p-button-outlined p-button-rounded mr-2"
@@ -65,8 +51,8 @@ class MapMenubar extends React.Component {
           }
         />
         <FiltroSidebar
-          visibleFiltroSidebar={this.state.visibleFiltroSidebar}
-          toggleFiltroSidebar={this.toggleFiltroSidebar}
+          visibleFiltroSidebar={this.props.visibleFiltroSidebar}
+          toggleFiltroSidebar={this.props.closeSidebar}
         />
       </div>
     );

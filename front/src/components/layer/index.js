@@ -72,7 +72,15 @@ const Layer = (props) => (
             );
           } else {
             return (
-              <GeoJSON key={index} data={item.geometry}>
+              <GeoJSON
+                key={index}
+                data={item.geometry}
+                eventHandlers={{
+                  click: () => {
+                    props.openMenu({ type: props.name, item });
+                  },
+                }}
+              >
                 {getTooltip(item)}
               </GeoJSON>
             );
