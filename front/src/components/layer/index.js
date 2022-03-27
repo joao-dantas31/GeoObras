@@ -1,4 +1,11 @@
-import { LayerGroup, LayersControl, GeoJSON, Tooltip } from "react-leaflet";
+import {
+  LayerGroup,
+  LayersControl,
+  GeoJSON,
+  Tooltip,
+  Marker,
+} from "react-leaflet";
+import leaflet from "leaflet";
 
 const formatItem = (item) => {
   let properties = {};
@@ -26,17 +33,34 @@ const getTooltip = (item) => {
   }
 };
 
+const iconObra = new leaflet.Icon({
+  iconUrl: "./icon_obra.png",
+});
+
 const Layer = (props) => (
   <LayersControl.Overlay checked={props.checked} name={props.name}>
     <LayerGroup>
       {props.geoJson &&
         props.geoJson.features &&
         props.geoJson.features.map((item, index) => {
-          return (
-            <GeoJSON key={index} data={item.geometry}>
-              {getTooltip(item)}
-            </GeoJSON>
-          );
+          if (item.geometry.type.includes("Point")) {
+            return (
+              <Marker
+                position={[
+                  leaflet.GeoJSON.coordsToLatLng(item.geometry.coordinates),
+                ]}
+                icon={iconObra}
+              >
+                {getTooltip(item)}
+              </Marker>
+            );
+          } else {
+            return (
+              <GeoJSON key={index} data={item.geometry}>
+                {getTooltip(item)}
+              </GeoJSON>
+            );
+          }
         })}
     </LayerGroup>
   </LayersControl.Overlay>
