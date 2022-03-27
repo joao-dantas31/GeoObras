@@ -1,7 +1,6 @@
 import { LayerGroup, LayersControl, GeoJSON, Tooltip } from "react-leaflet";
 
 const formatItem = (item) => {
-  debugger;
   let properties = {};
   Object.keys(item).forEach((key) => {
     const splitedKey = key.split(".");
