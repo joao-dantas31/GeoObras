@@ -29,7 +29,7 @@ class LayerStore {
       visible: true,
       checked: true,
       properties: [
-        "id",
+        "ogr_fid",
         "Descricao",
         "Tipo",
         "Categoria",
@@ -44,7 +44,7 @@ class LayerStore {
       visible: false,
       checked: true,
       properties: [
-        "id",
+        "ogr_fid",
         "Descricao",
         "Tipo",
         "Categoria",

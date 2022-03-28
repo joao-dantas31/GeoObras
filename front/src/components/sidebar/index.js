@@ -1,36 +1,43 @@
 import React from "react";
 import { Sidebar } from "primereact/sidebar";
-import { Accordion, AccordionTab } from "primereact/accordion";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { Button } from "primereact/button";
+import { InputNumber } from "primereact/inputnumber";
 
 class FiltroSidebar extends React.Component {
   constructor() {
     super();
+
+    this.state = { bufferSize: null };
   }
 
   getButtons() {
     return [
       {
         name: `Obras dentro de ${this.getNameField(this.props.item?.type)}`,
-        functionName: "STWithin",
+        operation: "STWithin",
       },
       {
         name: `Obras fora de ${this.getNameField(this.props.item?.type)}`,
-        functionName: "STDisjoint",
+        operation: "STDisjoint",
       },
       {
-        name: `Obras mais proximas de ${this.getNameField(
+        name: `Obras nas(os) ${
+          this.props.item?.type
+        } vizinhos de ${this.getNameField(this.props.item?.type)}`,
+        operationQuery:
+          " t2.ogr_geometry.STTouches(t.ogr_geometry) = 1 and l.ogr_geometry.STWithin(t2.ogr_geometry) = 1 and ",
+        numberOfTables: 2,
+      },
+      {
+        name: `5 obras mais proximas do centroide de ${this.getNameField(
           this.props.item?.type
         )}`,
-        functionName: "STDistance",
-      },
-      {
-        name: ` Buffer de obras da região selecionada`,
-        functionName: "STWithin",
+        orderBy: "l.ogr_geometry.STDistance(t.ogr_geometry.STCentroid())",
+        limit: 5,
       },
     ];
   }
@@ -54,13 +61,48 @@ class FiltroSidebar extends React.Component {
           onClick={() =>
             this.props.loadSpatialQuery({
               table: this.props.item?.type,
-              operation: button.functionName,
+              operation: button.operation,
               tableId: this.props.item?.item?.properties.ogr_fid,
+              orderBy: button.orderBy,
+              limit: button.limit,
+              numberOfTables: button.numberOfTables,
+              operationQuery: button.operationQuery,
             })
           }
         />
       );
     });
+  }
+
+  renderFuncionsObras() {
+    return (
+      <>
+        Bufer da obra selecionada:
+        <InputNumber
+          placeholder="Digite o tamanho do buffer em Km"
+          value={this.state.bufferSize}
+          style={{ width: "100%", marginBottom: "5px" }}
+          onChange={(e) => this.setState({ bufferSize: e.value })}
+        />
+        <Button
+          label={`Buffer de obra selecionada`}
+          style={{ width: "100%", marginBottom: "5px" }}
+          className="p-button-outlined "
+          onClick={() =>
+            this.props.loadSpatialQuery({
+              table:
+                this.props?.item?.type == "Resultado"
+                  ? "Obras"
+                  : this.props?.item?.type,
+              operationQuery: `t.ogr_geometry.STWithin(l.ogr_geometry.STBuffer(${
+                this.state.bufferSize / 111.11
+              })) = 1 and `,
+              tableId: this.props?.item?.item?.properties.ogr_fid,
+            })
+          }
+        />
+      </>
+    );
   }
 
   render() {
@@ -71,10 +113,13 @@ class FiltroSidebar extends React.Component {
           modal={false}
           name
           onHide={() => this.props.toggleFiltroSidebar()}
-          icons={<b> Escolha uma Consulta Espacial </b>}
+          icons={<b style={{ textAlign: "left" }}> Consulta Espacial </b>}
           dismissable={true}
         >
-          {this.renderButtons()}
+          {this.props?.item?.type === "Obras" ||
+          this.props?.item?.type === "Resultado"
+            ? this.renderFuncionsObras()
+            : this.renderButtons()}
         </Sidebar>
       </>
     );

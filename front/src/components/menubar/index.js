@@ -32,8 +32,9 @@ class MapMenubar extends React.Component {
               />
               <Button
                 className="p-button-outlined p-button-rounded mr-2"
-                icon="pi pi-eye"
-                tooltip="Listagem de obras"
+                icon="pi pi-filter-slash"
+                tooltip="Remover filtros"
+                onClick={() => this.props.removeFilters()}
               />
             </>
           }

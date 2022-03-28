@@ -19,6 +19,7 @@ module.exports = {
   },
 
   async getLayerWithProperties(layer, spatialCondition) {
+    const q = this.getQuery(layer, spatialCondition);
     const result = await query(this.getQuery(layer, spatialCondition));
 
     result.forEach((item) => {
@@ -39,10 +40,33 @@ module.exports = {
         (prop) => (queryProperties += `, l.${prop} as [properties.${prop}]`)
       );
 
-    const spatialQuery = spatialCondition
-      ? `, ${spatialCondition.table} t where t.ogr_geometry.${spatialCondition.operation}(l.ogr_geometry) = 1 and t.ogr_fid = ${spatialCondition.tableId}`
-      : "";
+    queryConditions = "";
+    if (spatialCondition) {
+      if (spatialCondition?.table) {
+        queryConditions += `, ${spatialCondition.table} t`;
+        for (let i = 2; i < spatialCondition?.numberOfTables + 1; i++) {
+          queryConditions += `, ${spatialCondition.table} t${i}`;
+        }
+      }
+      queryConditions += " where ";
 
-    return `select 'Feature' AS type, l.ogr_geometry.STAsText() as [geometry] ${queryProperties} FROM  ${layer.name} l ${spatialQuery}`;
+      if (spatialCondition?.operation)
+        queryConditions += `l.ogr_geometry.${spatialCondition.operation}(t.ogr_geometry) = 1 and `;
+
+      if (spatialCondition?.operationQuery)
+        queryConditions += spatialCondition?.operationQuery;
+
+      if (spatialCondition?.tableId)
+        queryConditions += `t.ogr_fid = ${spatialCondition.tableId}`;
+
+      if (spatialCondition?.orderBy)
+        queryConditions += ` order by ${spatialCondition.orderBy}`;
+    }
+
+    return `select ${
+      spatialCondition?.limit ? `top ${spatialCondition.limit}` : ""
+    } 'Feature' AS type, l.ogr_geometry.STAsText() as [geometry] ${queryProperties} FROM  ${
+      layer.name
+    } l ${queryConditions}`;
   },
 };

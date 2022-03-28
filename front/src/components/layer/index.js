@@ -59,6 +59,11 @@ const Layer = (props) => (
                     item.geometry.coordinates
                   )}
                   icon={iconObra}
+                  eventHandlers={{
+                    click: () => {
+                      props.openMenu({ type: props.name, item });
+                    },
+                  }}
                 >
                   {getTooltip(item)}
                 </Marker>

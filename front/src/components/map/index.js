@@ -14,10 +14,17 @@ class Map extends React.Component {
     this.center = [-8.77, -70.55];
 
     this.loadSpatialQuery = this.loadSpatialQuery.bind(this);
+    this.removeFilters = this.removeFilters.bind(this);
   }
 
   componentDidMount() {
     this.layerStore.loadAllLayers(() => this.forceUpdate());
+  }
+
+  removeFilters() {
+    this.layerStore.layersMap.Resultado.visible = false;
+    this.layerStore.layersMap.Obras.checked = true;
+    this.forceUpdate();
   }
 
   loadSpatialQuery(spatialCondition) {
@@ -60,6 +67,7 @@ class Map extends React.Component {
     return (
       <div id="map" style={{ width: "100%", height: "100%" }}>
         <MapMenubar
+          removeFilters={this.removeFilters}
           loadSpatialQuery={this.loadSpatialQuery}
           visibleFiltroSidebar={this.state.visibleFiltroSidebar}
           item={this.state.item}
