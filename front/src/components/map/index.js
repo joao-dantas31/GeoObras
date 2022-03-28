@@ -31,8 +31,8 @@ class Map extends React.Component {
     this.layerStore.loadLayer(
       this.layerStore.layersMap.Resultado,
       () => {
-        this.layerStore.layersMap.Resultado.visible = true;
         this.layerStore.layersMap.Obras.checked = false;
+        this.layerStore.layersMap.Resultado.visible = true;
         this.forceUpdate();
       },
       spatialCondition

@@ -77,9 +77,19 @@ class FiltroSidebar extends React.Component {
   renderFuncionsObras() {
     return (
       <>
+        <h3>Detalhes da Obra:</h3>
+        {Object.keys(this.props?.item?.item?.properties)
+          .slice(1, 6)
+          .map((key) => (
+            <div style={{ paddingBottom: "5px" }}>
+              <b>{key}: </b>
+              {this.props?.item?.item?.properties?.[key]}
+            </div>
+          ))}
         Bufer da obra selecionada:
         <InputNumber
           placeholder="Digite o tamanho do buffer em Km"
+          suffix=" Km"
           value={this.state.bufferSize}
           style={{ width: "100%", marginBottom: "5px" }}
           onChange={(e) => this.setState({ bufferSize: e.value })}
@@ -91,7 +101,7 @@ class FiltroSidebar extends React.Component {
           onClick={() =>
             this.props.loadSpatialQuery({
               table:
-                this.props?.item?.type == "Resultado"
+                this.props?.item?.type === "Resultado"
                   ? "Obras"
                   : this.props?.item?.type,
               operationQuery: `t.ogr_geometry.STWithin(l.ogr_geometry.STBuffer(${
