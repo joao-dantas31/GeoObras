@@ -41,8 +41,8 @@ class Map extends React.Component {
 
   renderLayers() {
     return Object.values(this.layerStore.layersMap).map((layer) => {
-      if (layer.visible) {
-        return (
+      return (
+        layer.visible && (
           <Layer
             openMenu={(item) => {
               this.setState({
@@ -58,8 +58,8 @@ class Map extends React.Component {
               ]
             }
           />
-        );
-      }
+        )
+      );
     });
   }
 

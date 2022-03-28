@@ -9,10 +9,6 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import FiltroSidebar from "../sidebar";
 
 class MapMenubar extends React.Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <div
