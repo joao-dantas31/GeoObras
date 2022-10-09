@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mssql = require("mssql");
+const {HttpError} = require("../errors/http-error");
 const config = {
   user: "sa",
   password: "Mssql123",
@@ -15,6 +16,9 @@ const queryFromDb = async (queryText, ...otherParams) => {
   let result;
   if (client) {
     result = await client.request().query(queryText, ...otherParams);
+  }
+  else {
+    throw new HttpError(500, "Failed to connect to the database")
   }
 
   mssql.close();

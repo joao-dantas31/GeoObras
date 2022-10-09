@@ -1,8 +1,12 @@
 const repository = require("../repository/layersRepository");
+const {HttpError} = require("../errors/http-error");
 
 module.exports = {
   async layers(request, response) {
     const layer = request.params.layer;
+    if(!layer) {
+      throw new HttpError(400, "You must send layer request param")
+    }
     try {
       const db = await repository.getLayer(layer);
       response.status(200).json(db);
